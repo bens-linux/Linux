@@ -23,19 +23,23 @@ Run the MiniShell executable:
 ###Example Commands:
 
 Built-in commands:
+
 cd /path/to/directory - Change directory.
 pwd - Print the current working directory.
 clear - Clear the terminal screen.
 ls - List files in the current directory.
 
 Piped commands:
+
 ls | grep mini - Pie output of ls to grep.
 
 Redirection:
+
 ls > output.txt - Redirect output to a file.
 ls >> output.txt - Append output to a file.
 
 Exiting:
+
 Use 'exit' to terminate the shell.
 
 ### Requirements
