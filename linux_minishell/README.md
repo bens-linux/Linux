@@ -5,9 +5,13 @@ Linux MiniShell is a lightweight custom shell written in C that supports basic L
 
 ### Features
 Signal Handling: Handles Ctrl+C gracefully without terminating the shell.
+
 Command History: Uses GNU Readline to provide command history and interactive input.
+
 Piping: Supports | for chaining commands (e.g., ls | grep mini).
+
 Output Redirection: Handles > and >> for output redirection to files.
+
 Built-in Commands: Includes cd, pwd, clear, and ls.
 
 ### Compilation
@@ -23,23 +27,19 @@ Run the MiniShell executable:
 ###Example Commands:
 
 Built-in commands:
-
 cd /path/to/directory - Change directory.
 pwd - Print the current working directory.
 clear - Clear the terminal screen.
 ls - List files in the current directory.
 
 Piped commands:
-
 ls | grep mini - Pie output of ls to grep.
 
 Redirection:
-
 ls > output.txt - Redirect output to a file.
 ls >> output.txt - Append output to a file.
 
 Exiting:
-
 Use 'exit' to terminate the shell.
 
 ### Requirements
