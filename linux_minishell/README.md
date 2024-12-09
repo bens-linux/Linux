@@ -33,7 +33,7 @@ clear - Clear the terminal screen.
 ls - List files in the current directory.
 
 Piped commands:
-ls | grep mini - Pie output of ls to grep.
+ls | grep mini - Pipe output of ls to grep.
 
 Redirection:
 ls > output.txt - Redirect output to a file.
