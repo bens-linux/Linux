@@ -1,33 +1,3 @@
-// Improved mini-shell.c file, incorporating the requested features such as signal handling, command history, pipelining, and redirection support.
-/* Key Features Added
-Signal Handling:
-
-Handles Ctrl+C gracefully with sigint_handler.
-Command History:
-
-Uses the GNU Readline library for command history and interactive input.
-Piping:
-
-Supports | for command pipelining with execute_piped_commands.
-Output Redirection:
-
-Handles > and >> for output redirection in execute_command.
-Improved Parsing:
-
-Handles parsing for piping and redirection.
-Compilation Instructions
-
-Compile the program with the -lreadline flag to link the GNU Readline library:
-```bash
-gcc mini-shell.c -o mini-shell -lreadline
-```
-Testing the Shell
-Run commands like:
-Built-ins: cd, pwd, ls.
-Piped commands: ls | grep mini.
-Redirection: ls > output.txt, ls >> output.txt.
-This enhanced shell should provide a rich and user-friendly Linux experience!
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,19 +17,21 @@ This enhanced shell should provide a rich and user-friendly Linux experience!
 
 void sigint_handler(int sig) {
     printf("\nUse 'exit' to quit the shell.\n");
-    printf("\033[1;32mmini-shell$ \033[0m");
+    fflush(stdout);
+    printf("\033[1;32mlinux_minishell$ \033[0m");
     fflush(stdout);
 }
 
 void read_input(char *buffer) {
-    char *input = readline("\033[1;32mmini-shell$ \033[0m");
+    char *input = readline("\033[1;31mlinux_minishell$ \033[0m");
     if (!input) {
         exit(EXIT_FAILURE);
     }
-    if (*input) {  // If not empty, add to history
+    if (*input) { // If not empty, add to history
         add_history(input);
     }
-    strncpy(buffer, input, MAX_LINE);
+    strncpy(buffer, input, MAX_LINE - 1); // Avoid overflow
+    buffer[MAX_LINE - 1] = '\0'; // Ensure null termination
     free(input);
 }
 
@@ -155,11 +127,11 @@ void execute_command(char **args) {
             perror("fork");
             exit(EXIT_FAILURE);
         }
-        if (pid == 0) {  // Child process
+        if (pid == 0) { // Child process
             execvp(args[0], args);
             perror("execvp");
             exit(EXIT_FAILURE);
-        } else {  // Parent process
+        } else { // Parent process
             int status;
             waitpid(pid, &status, 0);
         }
@@ -186,7 +158,7 @@ void handle_pwd() {
 }
 
 void handle_clear() {
-    printf("\033[H\033[J");  // ANSI escape code to clear the screen
+    printf("\033[H\033[J"); // ANSI escape code to clear the screen
 }
 
 void handle_ls() {
@@ -204,7 +176,7 @@ void handle_ls() {
 }
 
 int main() {
-    signal(SIGINT, sigint_handler);  // Handle Ctrl+C
+    signal(SIGINT, sigint_handler); // Handle Ctrl+C
 
     char input[MAX_LINE];
     char *args[MAX_ARGS];
@@ -214,7 +186,7 @@ int main() {
         read_input(input);
 
         if (strlen(input) == 0) {
-            continue;  // Ignore empty input
+            continue; // Ignore empty input
         }
 
         if (detect_piping(input, left_args, right_args)) {
@@ -225,7 +197,7 @@ int main() {
         parse_input(input, args);
 
         if (args[0] == NULL) {
-            continue;  // Empty command
+            continue; // Empty command
         }
 
         if (strcmp(args[0], "exit") == 0) {
